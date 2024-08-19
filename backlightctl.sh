@@ -9,7 +9,7 @@ max_brightness=$(cat $path_prefix$gpu/max_brightness) # Get the max brightness
 percentage=$1                                         # Brightness set by user
 
 usage() {
-    echo "Usage: $0 <percentage>";
+    echo "Usage: $0 <percentage>|help";
 }
 
 error() {
@@ -26,10 +26,18 @@ if [ "$max_brightness" == "" ]; then
     exit 1;
 fi
 
-# Check if user provided percentage
+# Check if user provided percentage, if not, display current percentage and exit
 if [ "$percentage" == "" ]; then
+    current_brightness=$(cat $path_prefix$gpu/brightness)
+    echo $(printf "Current brightness of $gpu: %.0f%%" $(echo "scale=2; (100/$max_brightness)*$current_brightness + 1" | bc));
+
+    exit 0;
+fi
+
+# display help if user stated "help" parameter
+if [ "$percentage" == "help" ]; then
     usage $@;
-    exit 1;
+    exit 0;
 fi
 
 # Check if the percentage is valid
