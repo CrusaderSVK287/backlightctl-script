@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set this to your desired gpu in /sys/class/backlight/
-gpu=amdgpu_bl2
+gpu=intel_backlight
 
 
 path_prefix=/sys/class/backlight/
@@ -29,7 +29,7 @@ fi
 # Check if user provided percentage, if not, display current percentage and exit
 if [ "$percentage" == "" ]; then
     current_brightness=$(cat $path_prefix$gpu/brightness)
-    echo $(printf "Current brightness of $gpu: %.0f%%" $(echo "scale=2; (100/$max_brightness)*$current_brightness + 1" | bc));
+    echo $(printf "Current brightness of $gpu: %.0f%%" $(echo "scale=4; (100/$max_brightness)*$current_brightness" | bc));
 
     exit 0;
 fi
